@@ -1,0 +1,100 @@
+<div class="hk-auth">
+  <div class="hk-auth-visuel">
+    <div class="hk-auth-visuel-contenu">
+      <span class="hk-auth-logo"><i class="bi bi-person-plus-fill"></i></span>
+      <h1>Rejoignez le hackathon</h1>
+      <p>Creez votre compte participant en moins d'une minute.</p>
+
+      <ul class="hk-auth-liste">
+        <li><i class="bi bi-1-circle-fill"></i> Creez votre compte</li>
+        <li><i class="bi bi-2-circle-fill"></i> Formez ou rejoignez une equipe</li>
+        <li><i class="bi bi-3-circle-fill"></i> Soumettez votre projet</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="hk-auth-form">
+    <div class="hk-auth-boite">
+      <h2 class="hk-page-title">Inscription</h2>
+      <p class="hk-page-subtitle mb-3">Vous serez inscrit comme participant.</p>
+
+      <div class="hk-alert hk-alert-info mb-3">
+        <i class="bi bi-info-circle-fill"></i>
+        <span>Les comptes jury sont crees par l'administrateur.</span>
+      </div>
+
+      @if (erreur) {
+        <div class="hk-alert hk-alert-danger mb-3">
+          <i class="bi bi-exclamation-triangle-fill"></i>
+          <span>{{ erreur }}</span>
+        </div>
+      }
+
+      <form [formGroup]="inscriptionForm" (ngSubmit)="onSoumettre()">
+        <div class="row">
+          <div class="col-6 mb-3">
+            <label for="prenom" class="form-label">Prenom</label>
+            <input id="prenom" type="text" class="form-control" formControlName="prenom" placeholder="Mamadou" />
+            @if (prenom?.touched && prenom?.invalid) {
+              <div class="form-text text-danger">Obligatoire.</div>
+            }
+          </div>
+          <div class="col-6 mb-3">
+            <label for="nom" class="form-label">Nom</label>
+            <input id="nom" type="text" class="form-control" formControlName="nom" placeholder="Sow" />
+            @if (nom?.touched && nom?.invalid) {
+              <div class="form-text text-danger">Obligatoire.</div>
+            }
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="username" class="form-label">Nom d'utilisateur</label>
+          <div class="hk-input-icone">
+            <i class="bi bi-person"></i>
+            <input id="username" type="text" class="form-control" formControlName="username" placeholder="mamadou" />
+          </div>
+          @if (username?.touched && username?.invalid) {
+            <div class="form-text text-danger">3 caracteres minimum.</div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label for="motDePasse" class="form-label">Mot de passe</label>
+          <div class="hk-input-icone">
+            <i class="bi bi-lock"></i>
+            <input id="motDePasse" type="password" class="form-control" formControlName="motDePasse" placeholder="••••••" />
+          </div>
+          @if (motDePasse?.touched && motDePasse?.invalid) {
+            <div class="form-text text-danger">4 caracteres minimum.</div>
+          }
+        </div>
+
+        <div class="mb-4">
+          <label for="confirmation" class="form-label">Confirmer le mot de passe</label>
+          <div class="hk-input-icone">
+            <i class="bi bi-shield-lock"></i>
+            <input id="confirmation" type="password" class="form-control" formControlName="confirmation" placeholder="••••••" />
+          </div>
+          @if (inscriptionForm.touched && inscriptionForm.errors?.['motsDePasseDifferents']) {
+            <div class="form-text text-danger">Les deux mots de passe ne correspondent pas.</div>
+          }
+        </div>
+
+        <button type="submit" class="btn-hk w-100" [disabled]="chargement">
+          @if (chargement) {
+            <span class="spinner-border spinner-border-sm me-2"></span> Inscription...
+          } @else {
+            <i class="bi bi-person-plus me-1"></i> Creer mon compte
+          }
+        </button>
+      </form>
+
+      <div class="hk-divider"></div>
+
+      <p class="text-center mb-0" style="font-size: 0.9rem; color: var(--hk-muted)">
+        Deja un compte ? <a routerLink="/login" class="hk-link">Se connecter</a>
+      </p>
+    </div>
+  </div>
+</div>

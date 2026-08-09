@@ -1,0 +1,131 @@
+<!-- Bandeau de bienvenue -->
+<div class="hk-hero mb-4">
+  <div>
+    <h2 class="hk-hero-titre">Bonjour {{ authService.getUsername() }}</h2>
+    <p class="hk-hero-texte">Voici l'etat de votre participation au hackathon.</p>
+  </div>
+  <div class="hk-hero-roles">
+    @for (role of authService.getRoles(); track role) {
+      <span class="hk-badge hk-badge-slate">
+        <i class="bi bi-shield-check"></i> {{ role }}
+      </span>
+    }
+  </div>
+</div>
+
+@if (erreur) {
+  <div class="hk-alert hk-alert-danger mb-3">
+    <i class="bi bi-exclamation-triangle-fill"></i><span>{{ erreur }}</span>
+  </div>
+}
+
+@if (chargement) {
+  <div class="hk-empty">
+    <span class="spinner-border text-primary"></span>
+    <p class="mt-3 mb-0">Chargement de vos donnees...</p>
+  </div>
+} @else {
+
+  <!-- Cartes de statistiques -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="hk-card hk-stat h-100">
+        <div class="d-flex align-items-center gap-3 mb-2">
+          <span class="hk-stat-icon hk-bg-indigo"><i class="bi bi-people-fill"></i></span>
+          <span class="hk-stat-label">Mon equipe</span>
+        </div>
+        @if (monEquipe) {
+          <p class="hk-stat-value">{{ monEquipe.name }}</p>
+          <p class="text-muted small mb-0">{{ monEquipe.nombreMembres }} membre(s)</p>
+        } @else {
+          <p class="hk-stat-value text-muted">Aucune</p>
+          <p class="text-muted small mb-0">Vous n'appartenez a aucune equipe</p>
+        }
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="hk-card hk-stat h-100">
+        <div class="d-flex align-items-center gap-3 mb-2">
+          <span class="hk-stat-icon hk-bg-violet"><i class="bi bi-rocket-takeoff-fill"></i></span>
+          <span class="hk-stat-label">Notre projet</span>
+        </div>
+        @if (monProjet) {
+          @if (monProjet.scoreMoyen !== null) {
+            <p class="hk-stat-value">{{ monProjet.scoreMoyen }}<small class="text-muted fs-6"> / 20</small></p>
+            <p class="text-muted small mb-2">{{ monProjet.title }}</p>
+            <div class="hk-progress">
+              <div class="hk-progress-bar" [style.width.%]="monProjet.scoreMoyen * 5"></div>
+            </div>
+          } @else {
+            <p class="hk-stat-value">{{ monProjet.title }}</p>
+            <p class="text-muted small mb-0">
+              <i class="bi bi-lock-fill me-1"></i>Resultats non publies
+            </p>
+          }
+        } @else {
+          <p class="hk-stat-value text-muted">—</p>
+          <p class="text-muted small mb-0">Aucun projet soumis</p>
+        }
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="hk-card hk-stat h-100">
+        <div class="d-flex align-items-center gap-3 mb-2">
+          <span class="hk-stat-icon hk-bg-amber"><i class="bi bi-trophy-fill"></i></span>
+          <span class="hk-stat-label">En tete du classement</span>
+        </div>
+        @if (classementNonPublie) {
+          <p class="hk-stat-value text-muted"><i class="bi bi-lock-fill"></i></p>
+          <p class="text-muted small mb-0">Resultats non publies</p>
+        } @else if (premier) {
+          <p class="hk-stat-value">{{ premier.teamName }}</p>
+          <p class="text-muted small mb-0">{{ premier.scoreMoyen }} / 20 · {{ premier.nombreEvaluations }} note(s)</p>
+        } @else {
+          <p class="hk-stat-value text-muted">—</p>
+          <p class="text-muted small mb-0">Aucun projet note</p>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Acces rapides -->
+  <h3 class="h6 text-uppercase text-muted mb-3" style="letter-spacing: .06em">Acces rapides</h3>
+  <div class="row g-3">
+    <div class="col-md-4">
+      <a routerLink="/participant/equipe" class="hk-card hk-card-hover hk-raccourci">
+        <span class="hk-stat-icon hk-bg-indigo"><i class="bi bi-people-fill"></i></span>
+        <span>
+          <strong>Equipes</strong>
+          <small>Creer, rejoindre ou quitter une equipe</small>
+        </span>
+        <i class="bi bi-chevron-right ms-auto text-muted"></i>
+      </a>
+    </div>
+
+    <div class="col-md-4">
+      <a routerLink="/participant/projet" class="hk-card hk-card-hover hk-raccourci">
+        <span class="hk-stat-icon hk-bg-violet"><i class="bi bi-rocket-takeoff-fill"></i></span>
+        <span>
+          <strong>Projets</strong>
+          <small>Soumettre ou modifier votre projet</small>
+        </span>
+        <i class="bi bi-chevron-right ms-auto text-muted"></i>
+      </a>
+    </div>
+
+    <div class="col-md-4">
+      <a routerLink="/classement" class="hk-card hk-card-hover hk-raccourci">
+        <span class="hk-stat-icon hk-bg-amber"><i class="bi bi-trophy-fill"></i></span>
+        <span>
+          <strong>Classement</strong>
+          <small>Suivre le podium en direct</small>
+        </span>
+        <i class="bi bi-chevron-right ms-auto text-muted"></i>
+      </a>
+    </div>
+
+
+  </div>
+}

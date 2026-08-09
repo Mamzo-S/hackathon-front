@@ -1,0 +1,161 @@
+<div class="mb-4">
+  <h2 class="hk-page-title">Notre projet</h2>
+  <p class="hk-page-subtitle">Le projet de votre equipe, modifiable jusqu'a la deadline.</p>
+</div>
+
+@if (erreur) {
+  <div class="hk-alert hk-alert-danger mb-3"><i class="bi bi-exclamation-triangle-fill"></i><span>{{ erreur }}</span></div>
+}
+@if (succes) {
+  <div class="hk-alert hk-alert-success mb-3"><i class="bi bi-check-circle-fill"></i><span>{{ succes }}</span></div>
+}
+
+@if (!aUneEquipe) {
+  <div class="hk-card hk-empty">
+    <i class="bi bi-people"></i>
+    <h3 class="h6">Vous n'appartenez a aucune equipe</h3>
+    <p class="mb-3 small">Un projet appartient a une equipe : rejoignez-en une ou creez la votre.</p>
+    <a routerLink="/participant/equipe" class="btn-hk">
+      <i class="bi bi-people-fill me-1"></i> Aller aux equipes
+    </a>
+  </div>
+} @else {
+  <div class="row g-4">
+    <!-- Formulaire : soumission ou modification -->
+    <div class="col-lg-6">
+      <div class="hk-card p-3 p-lg-4">
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <span class="hk-stat-icon hk-bg-violet" style="width: 34px; height: 34px; font-size: 1rem">
+            <i class="bi" [class.bi-pencil]="monProjet" [class.bi-upload]="!monProjet"></i>
+          </span>
+          <h3 class="h6 mb-0">{{ monProjet ? 'Modifier notre projet' : 'Soumettre un projet' }}</h3>
+        </div>
+
+        <form [formGroup]="projetForm" (ngSubmit)="onSoumettre()">
+          <div class="mb-3">
+            <label for="title" class="form-label">Titre du projet</label>
+            <input id="title" type="text" class="form-control" formControlName="title"
+                   placeholder="Application de covoiturage" />
+            @if (title?.touched && title?.invalid) {
+              <div class="form-text text-danger">3 caracteres minimum.</div>
+            }
+          </div>
+
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea id="description" class="form-control" rows="6" formControlName="description"
+                      placeholder="Quel probleme resolvez-vous, et comment ?"></textarea>
+            @if (description?.touched && description?.invalid) {
+              <div class="form-text text-danger">La description est obligatoire.</div>
+            }
+          </div>
+
+          <div class="mb-4">
+            <label for="githubLink" class="form-label">
+              Lien GitHub <span class="text-muted fw-normal">(optionnel)</span>
+            </label>
+            <div class="hk-input-icone">
+              <i class="bi bi-github"></i>
+              <input id="githubLink" type="url" class="form-control" formControlName="githubLink"
+                     placeholder="https://github.com/..." />
+            </div>
+          </div>
+
+          <button type="submit" class="btn-hk w-100" [disabled]="enCours">
+            @if (enCours) {
+              <span class="spinner-border spinner-border-sm me-2"></span> Enregistrement...
+            } @else {
+              <i class="bi bi-check-lg me-1"></i>
+              {{ monProjet ? 'Enregistrer les modifications' : 'Soumettre le projet' }}
+            }
+          </button>
+          <p class="form-text text-center mb-0 mt-2">
+            <i class="bi bi-clock me-1"></i> Modification possible jusqu'a la deadline.
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <!-- Recapitulatif du projet de l'equipe -->
+    <div class="col-lg-6">
+      @if (chargement) {
+        <div class="hk-card hk-empty">
+          <span class="spinner-border text-primary"></span>
+          <p class="mt-3 mb-0">Chargement...</p>
+        </div>
+      } @else if (monProjet) {
+        <div class="hk-card">
+          <div class="p-3 p-lg-4">
+            <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
+              <h3 class="h5 mb-0">{{ monProjet.title }}</h3>
+              @if (monProjet.scoreMoyen !== null) {
+                <span class="hk-note"><strong>{{ monProjet.scoreMoyen }}</strong><small>/20</small></span>
+              } @else {
+                <span class="hk-note hk-note-masquee" title="Les resultats ne sont pas encore publies">
+                  <i class="bi bi-lock-fill"></i>
+                </span>
+              }
+            </div>
+
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <span class="hk-badge hk-badge-indigo">
+                <i class="bi bi-people-fill"></i>
+                <span>{{ monEquipe?.name }}</span>
+              </span>
+            </div>
+
+            <p class="mb-3 hk-description">{{ monProjet.description }}</p>
+
+            @if (monProjet.githubLink) {
+              <a [href]="monProjet.githubLink" target="_blank" rel="noopener" class="hk-github mb-3">
+                <i class="bi bi-github"></i>
+                <span>{{ monProjet.githubLink }}</span>
+                <i class="bi bi-box-arrow-up-right ms-auto"></i>
+              </a>
+            }
+
+            <div class="hk-divider"></div>
+
+            <p class="hk-stat-label mb-2">Membres de l'equipe ({{ membres.length }})</p>
+            <ul class="hk-liste-membres">
+              @for (membre of membres; track membre.id) {
+                <li>
+                  <app-avatar [prenom]="membre.utilisateur.prenom" [nom]="membre.utilisateur.nom" [taille]="36" />
+                  <span class="hk-membre-infos">
+                    <strong>
+                      {{ membre.utilisateur.prenom }} {{ membre.utilisateur.nom }}
+                      @if (membre.createur) {
+                        <span class="hk-badge hk-badge-amber ms-1">
+                          <i class="bi bi-star-fill"></i><span>Createur</span>
+                        </span>
+                      }
+                    </strong>
+                    <small>{{ membre.utilisateur.username }}</small>
+                  </span>
+                  <span class="hk-membre-date">
+                    <i class="bi bi-calendar-check me-1"></i>{{ membre.dateAdhesion | dateFr }}
+                  </span>
+                </li>
+              } @empty {
+                <li class="text-muted small justify-content-center py-2">Aucun membre pour l'instant.</li>
+              }
+            </ul>
+
+            @if (monProjet.scoreMoyen === null) {
+              <p class="text-muted small mt-3 mb-0">
+                <i class="bi bi-info-circle me-1"></i>
+                Votre note apparaitra ici une fois les resultats publies par l'organisation.
+              </p>
+            }
+          </div>
+        </div>
+      } @else {
+        <div class="hk-card hk-empty">
+          <i class="bi bi-rocket-takeoff"></i>
+          <h3 class="h6">Aucun projet soumis</h3>
+          <p class="mb-0 small">Remplissez le formulaire pour soumettre le projet de votre equipe.</p>
+        </div>
+      }
+    </div>
+  </div>
+}

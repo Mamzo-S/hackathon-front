@@ -1,0 +1,146 @@
+.hk-note {
+  background: var(--hk-gradient-soft);
+  border: 1px solid #e0e7ff;
+  border-radius: 12px;
+  padding: 0.35rem 0.75rem;
+  color: var(--hk-primary-dark);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.hk-note strong {
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.hk-note small {
+  font-size: 0.78rem;
+  opacity: 0.75;
+}
+
+.hk-description {
+  color: #4b5167;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+.hk-github {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: #fafbfe;
+  border: 1px solid var(--hk-border);
+  border-radius: 10px;
+  padding: 0.55rem 0.8rem;
+  font-size: 0.84rem;
+  color: var(--hk-text);
+  text-decoration: none;
+  transition: border-color 0.16s ease, background 0.16s ease;
+}
+
+.hk-github span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hk-github:hover {
+  border-color: var(--hk-primary);
+  background: #f5f4ff;
+  color: var(--hk-primary-dark);
+}
+
+.hk-input-icone {
+  position: relative;
+}
+
+.hk-input-icone i {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--hk-muted);
+  font-size: 0.95rem;
+  pointer-events: none;
+}
+
+.hk-input-icone .form-control {
+  padding-left: 2.4rem;
+}
+
+@media (max-width: 991px) {
+  .hk-sticky {
+    position: static;
+  }
+}
+
+.hk-note-masquee {
+  background: #fffbeb;
+  border-color: #fef3c7;
+  color: #b45309;
+  font-size: 1rem;
+  padding: 0.42rem 0.85rem;
+}
+
+.hk-membre {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: #fafbfe;
+  border: 1px solid var(--hk-border);
+  border-radius: 999px;
+  padding: 0.22rem 0.72rem 0.22rem 0.22rem;
+  font-size: 0.83rem;
+  font-weight: 500;
+}
+
+/* Liste detaillee des membres de l'equipe */
+.hk-liste-membres {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.hk-liste-membres li {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  background: #fafbfe;
+  border: 1px solid var(--hk-border);
+  border-radius: 12px;
+  padding: 0.55rem 0.8rem;
+}
+
+.hk-membre-infos {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+  min-width: 0;
+  flex: 1;
+}
+
+.hk-membre-infos strong {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.hk-membre-infos small {
+  color: var(--hk-muted);
+  font-size: 0.78rem;
+}
+
+.hk-membre-date {
+  font-size: 0.75rem;
+  color: var(--hk-muted);
+  white-space: nowrap;
+}
+
+@media (max-width: 575px) {
+  .hk-membre-date {
+    display: none;
+  }
+}

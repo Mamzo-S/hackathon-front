@@ -1,0 +1,110 @@
+<div class="hk-hero mb-4">
+  <div>
+    <h2 class="hk-hero-titre">Espace administrateur</h2>
+    <p class="hk-hero-texte">Vue d'ensemble du hackathon et publication des resultats.</p>
+  </div>
+</div>
+
+@if (erreur) {
+  <div class="hk-alert hk-alert-danger mb-3"><i class="bi bi-exclamation-triangle-fill"></i><span>{{ erreur }}</span></div>
+}
+@if (succes) {
+  <div class="hk-alert hk-alert-success mb-3"><i class="bi bi-check-circle-fill"></i><span>{{ succes }}</span></div>
+}
+
+<!-- Publication des resultats (point 4.3) -->
+<div class="hk-publication mb-4" [class.publie]="resultatsPublies">
+  <span class="hk-publication-icone">
+    <i class="bi" [class.bi-unlock-fill]="resultatsPublies" [class.bi-lock-fill]="!resultatsPublies"></i>
+  </span>
+  <div class="flex-grow-1">
+    <strong>{{ resultatsPublies ? 'Resultats publies' : 'Resultats non publies' }}</strong>
+    <p class="mb-0">
+      @if (resultatsPublies) {
+        Le classement est visible de tous et les scores apparaissent sur les projets.
+      } @else {
+        Le classement est ferme. Les participants ne voient pas les scores ; seuls le jury et vous y avez acces.
+      }
+    </p>
+  </div>
+  <button class="btn-hk" (click)="basculerPublication()" [disabled]="enCours">
+    @if (resultatsPublies) {
+      <i class="bi bi-eye-slash me-1"></i> Masquer
+    } @else {
+      <i class="bi bi-megaphone-fill me-1"></i> Publier les resultats
+    }
+  </button>
+</div>
+
+@if (chargement) {
+  <div class="hk-card hk-empty">
+    <span class="spinner-border text-primary"></span>
+    <p class="mt-3 mb-0">Chargement des donnees...</p>
+  </div>
+} @else {
+  <div class="row g-3 mb-4">
+    <div class="col-md-3 col-6">
+      <div class="hk-card hk-stat h-100">
+        <span class="hk-stat-icon hk-bg-indigo mb-2"><i class="bi bi-people-fill"></i></span>
+        <div class="hk-stat-label">Participants</div>
+        <p class="hk-stat-value">{{ nombreParticipants }}</p>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="hk-card hk-stat h-100">
+        <span class="hk-stat-icon hk-bg-violet mb-2"><i class="bi bi-star-fill"></i></span>
+        <div class="hk-stat-label">Jurys</div>
+        <p class="hk-stat-value">{{ nombreJurys }}</p>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="hk-card hk-stat h-100">
+        <span class="hk-stat-icon hk-bg-emerald mb-2"><i class="bi bi-diagram-3-fill"></i></span>
+        <div class="hk-stat-label">Equipes</div>
+        <p class="hk-stat-value">{{ equipes.length }}</p>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="hk-card hk-stat h-100">
+        <span class="hk-stat-icon hk-bg-rose mb-2"><i class="bi bi-rocket-takeoff-fill"></i></span>
+        <div class="hk-stat-label">Projets</div>
+        <p class="hk-stat-value">{{ projets.length }}</p>
+      </div>
+    </div>
+  </div>
+
+  @if (projetsNonNotes > 0) {
+    <div class="hk-alert hk-alert-info mb-4">
+      <i class="bi bi-info-circle-fill"></i>
+      <span>{{ projetsNonNotes }} projet(s) n'ont recu aucune note. Publier maintenant les ferait apparaitre a 0.</span>
+    </div>
+  }
+
+  <h3 class="h6 text-uppercase text-muted mb-3" style="letter-spacing: .06em">Gestion</h3>
+  <div class="row g-3">
+    <div class="col-md-6 col-lg-3">
+      <a routerLink="/admin/utilisateurs" class="hk-card hk-card-hover hk-raccourci">
+        <span class="hk-stat-icon hk-bg-indigo"><i class="bi bi-person-lines-fill"></i></span>
+        <span><strong>Utilisateurs</strong><small>{{ utilisateurs.length }} compte(s)</small></span>
+      </a>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <a routerLink="/admin/equipes" class="hk-card hk-card-hover hk-raccourci">
+        <span class="hk-stat-icon hk-bg-emerald"><i class="bi bi-people-fill"></i></span>
+        <span><strong>Equipes</strong><small>{{ equipes.length }} equipe(s)</small></span>
+      </a>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <a routerLink="/admin/projets" class="hk-card hk-card-hover hk-raccourci">
+        <span class="hk-stat-icon hk-bg-rose"><i class="bi bi-rocket-takeoff-fill"></i></span>
+        <span><strong>Projets</strong><small>{{ projets.length }} projet(s)</small></span>
+      </a>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <a routerLink="/admin/evaluations" class="hk-card hk-card-hover hk-raccourci">
+        <span class="hk-stat-icon hk-bg-violet"><i class="bi bi-clipboard-check-fill"></i></span>
+        <span><strong>Evaluations</strong><small>{{ evaluations.length }} note(s)</small></span>
+      </a>
+    </div>
+  </div>
+}

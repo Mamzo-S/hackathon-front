@@ -1,1 +1,315 @@
-/* You can add global styles to this file, and also import other style files */
+/* ==========================================================================
+   Styles globaux — theme "Hackathon"
+   Bootstrap 5 et Bootstrap Icons sont charges par CDN dans src/index.html.
+   Ce fichier ne fait qu'ajouter le theme par-dessus.
+   ========================================================================== */
+
+:root {
+  /* Palette */
+  --hk-primary: #6366f1;
+  --hk-primary-dark: #4f46e5;
+  --hk-accent: #ec4899;
+  --hk-violet: #8b5cf6;
+  --hk-success: #10b981;
+  --hk-warning: #f59e0b;
+  --hk-danger: #ef4444;
+
+  /* Degrades */
+  --hk-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+  --hk-gradient-soft: linear-gradient(135deg, #eef2ff 0%, #faf5ff 100%);
+  --hk-sidebar: linear-gradient(180deg, #1e1b4b 0%, #312e81 100%);
+
+  /* Surfaces */
+  --hk-bg: #f6f7fb;
+  --hk-surface: #ffffff;
+  --hk-border: #e8eaf1;
+  --hk-text: #1f2340;
+  --hk-muted: #71768f;
+
+  --hk-radius: 16px;
+  --hk-shadow: 0 1px 2px rgba(20, 22, 48, 0.04), 0 8px 24px rgba(20, 22, 48, 0.06);
+  --hk-shadow-lg: 0 12px 40px rgba(79, 70, 229, 0.18);
+
+  --hk-sidebar-w: 256px;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  background-color: var(--hk-bg);
+  color: var(--hk-text);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* --------------------------------------------------------------- Cartes */
+
+.hk-card {
+  background: var(--hk-surface);
+  border: 1px solid var(--hk-border);
+  border-radius: var(--hk-radius);
+  box-shadow: var(--hk-shadow);
+}
+
+.hk-card-hover {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.hk-card-hover:hover {
+  transform: translateY(-3px);
+  border-color: #d7d9ff;
+  box-shadow: 0 10px 30px rgba(20, 22, 48, 0.1);
+}
+
+/* En-tete de page */
+.hk-page-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 0.15rem;
+}
+
+.hk-page-subtitle {
+  color: var(--hk-muted);
+  font-size: 0.92rem;
+  margin-bottom: 0;
+}
+
+/* --------------------------------------------------- Statistiques (KPI) */
+
+.hk-stat {
+  position: relative;
+  overflow: hidden;
+  padding: 1.15rem 1.25rem;
+}
+
+.hk-stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: #fff;
+}
+
+.hk-stat-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--hk-muted);
+  font-weight: 600;
+}
+
+.hk-stat-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.hk-bg-indigo { background: linear-gradient(135deg, #6366f1, #4f46e5); }
+.hk-bg-violet { background: linear-gradient(135deg, #a78bfa, #7c3aed); }
+.hk-bg-rose   { background: linear-gradient(135deg, #f472b6, #db2777); }
+.hk-bg-amber  { background: linear-gradient(135deg, #fbbf24, #d97706); }
+.hk-bg-emerald{ background: linear-gradient(135deg, #34d399, #059669); }
+
+/* ------------------------------------------------------------- Boutons */
+
+.btn-hk {
+  background: var(--hk-gradient);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 0.55rem 1.1rem;
+  transition: filter 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.btn-hk:hover:not(:disabled) {
+  color: #fff;
+  filter: brightness(1.07);
+  transform: translateY(-1px);
+  box-shadow: var(--hk-shadow-lg);
+}
+
+.btn-hk:disabled {
+  opacity: 0.6;
+}
+
+.btn-hk-outline {
+  background: transparent;
+  border: 1.5px solid var(--hk-border);
+  color: var(--hk-text);
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+  transition: all 0.18s ease;
+}
+
+.btn-hk-outline:hover:not(:disabled) {
+  border-color: var(--hk-primary);
+  color: var(--hk-primary-dark);
+  background: #f5f4ff;
+}
+
+/* ------------------------------------------------------------- Badges */
+
+.hk-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 0.28rem 0.62rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+
+.hk-badge-indigo { background: #eef2ff; color: #4338ca; border-color: #e0e7ff; }
+.hk-badge-violet { background: #f5f3ff; color: #6d28d9; border-color: #ede9fe; }
+.hk-badge-rose   { background: #fdf2f8; color: #be185d; border-color: #fce7f3; }
+.hk-badge-emerald{ background: #ecfdf5; color: #047857; border-color: #d1fae5; }
+.hk-badge-amber  { background: #fffbeb; color: #b45309; border-color: #fef3c7; }
+.hk-badge-slate  { background: #f4f5f9; color: #4b5167; border-color: #e8eaf1; }
+
+/* ------------------------------------------------------- Champs de saisie */
+
+.form-control, .form-select {
+  border-radius: 10px;
+  border: 1.5px solid var(--hk-border);
+  padding: 0.6rem 0.85rem;
+  font-size: 0.94rem;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--hk-primary);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+}
+
+.form-label {
+  font-weight: 600;
+  font-size: 0.86rem;
+  margin-bottom: 0.35rem;
+}
+
+/* ------------------------------------------------------------- Alertes */
+
+.hk-alert {
+  border-radius: 12px;
+  border: 1px solid transparent;
+  padding: 0.7rem 0.95rem;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.hk-alert-danger  { background: #fef2f2; color: #b91c1c; border-color: #fee2e2; }
+.hk-alert-success { background: #ecfdf5; color: #047857; border-color: #d1fae5; }
+.hk-alert-info    { background: #eef2ff; color: #4338ca; border-color: #e0e7ff; }
+
+/* -------------------------------------------------------- Etat vide */
+
+.hk-empty {
+  text-align: center;
+  padding: 2.75rem 1.25rem;
+  color: var(--hk-muted);
+}
+
+.hk-empty i {
+  font-size: 2.5rem;
+  color: #c7cbdd;
+  display: block;
+  margin-bottom: 0.65rem;
+}
+
+/* ------------------------------------------------------------- Tableaux */
+
+.hk-table {
+  margin: 0;
+}
+
+.hk-table thead th {
+  background: #fafbfe;
+  border-bottom: 1px solid var(--hk-border);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--hk-muted);
+  font-weight: 700;
+  padding: 0.8rem 1rem;
+}
+
+.hk-table tbody td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid #f1f2f7;
+  vertical-align: middle;
+}
+
+.hk-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.hk-table tbody tr:hover {
+  background: #fafbff;
+}
+
+/* ------------------------------------------------------- Barre de progression */
+
+.hk-progress {
+  height: 6px;
+  border-radius: 999px;
+  background: #eef0f7;
+  overflow: hidden;
+}
+
+.hk-progress-bar {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--hk-gradient);
+}
+
+/* --------------------------------------------------------------- Divers */
+
+.hk-link {
+  color: var(--hk-primary-dark);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.hk-link:hover {
+  text-decoration: underline;
+}
+
+.hk-divider {
+  height: 1px;
+  background: var(--hk-border);
+  margin: 1.1rem 0;
+}
+
+/* Bouton icone utilise dans les tableaux de l'espace administrateur */
+.hk-btn-icone {
+  border: 1px solid var(--hk-border);
+  background: #fff;
+  color: var(--hk-muted);
+  border-radius: 9px;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.16s ease;
+}
+
+.hk-btn-icone:hover:not(:disabled) {
+  border-color: var(--hk-danger);
+  color: var(--hk-danger);
+  background: #fef2f2;
+}
+
+.hk-btn-icone:disabled {
+  opacity: 0.5;
+}

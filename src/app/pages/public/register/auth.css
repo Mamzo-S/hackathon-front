@@ -1,0 +1,135 @@
+/* Mise en page commune aux pages Connexion et Inscription */
+
+.hk-auth {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Panneau visuel de gauche */
+.hk-auth-visuel {
+  flex: 1;
+  background: var(--hk-sidebar);
+  color: #e0e7ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hk-auth-visuel::before {
+  content: '';
+  position: absolute;
+  width: 460px;
+  height: 460px;
+  border-radius: 50%;
+  background: var(--hk-gradient);
+  opacity: 0.35;
+  filter: blur(90px);
+  top: -110px;
+  right: -110px;
+}
+
+.hk-auth-visuel-contenu {
+  position: relative;
+  max-width: 420px;
+}
+
+.hk-auth-logo {
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  background: var(--hk-gradient);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.65rem;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 10px 28px rgba(236, 72, 153, 0.45);
+}
+
+.hk-auth-visuel h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 0.85rem;
+}
+
+.hk-auth-visuel > div > p {
+  color: #a5b4fc;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+.hk-auth-liste {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.hk-auth-liste li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.94rem;
+  color: #c7d2fe;
+}
+
+.hk-auth-liste i {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+/* Panneau formulaire de droite */
+.hk-auth-form {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.5rem;
+  background: var(--hk-bg);
+}
+
+.hk-auth-boite {
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Champ avec icone a gauche */
+.hk-input-icone {
+  position: relative;
+}
+
+.hk-input-icone i {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--hk-muted);
+  font-size: 0.95rem;
+  pointer-events: none;
+}
+
+.hk-input-icone .form-control {
+  padding-left: 2.4rem;
+}
+
+@media (max-width: 991px) {
+  .hk-auth-visuel {
+    display: none;
+  }
+}

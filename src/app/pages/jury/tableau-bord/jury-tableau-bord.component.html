@@ -1,0 +1,72 @@
+<div class="hk-hero mb-4">
+  <div>
+    <h2 class="hk-hero-titre">Espace jury</h2>
+    <p class="hk-hero-texte">Bonjour {{ authService.getUsername() }}, voici l'avancement de vos evaluations.</p>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-3 col-6">
+    <div class="hk-card hk-stat h-100">
+      <span class="hk-stat-icon hk-bg-indigo mb-2"><i class="bi bi-rocket-takeoff-fill"></i></span>
+      <div class="hk-stat-label">Projets soumis</div>
+      <p class="hk-stat-value">{{ nombreProjets }}</p>
+    </div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="hk-card hk-stat h-100">
+      <span class="hk-stat-icon hk-bg-emerald mb-2"><i class="bi bi-check-circle-fill"></i></span>
+      <div class="hk-stat-label">Deja notes</div>
+      <p class="hk-stat-value">{{ nombreNotes }}</p>
+    </div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="hk-card hk-stat h-100">
+      <span class="hk-stat-icon hk-bg-amber mb-2"><i class="bi bi-hourglass-split"></i></span>
+      <div class="hk-stat-label">Restants</div>
+      <p class="hk-stat-value">{{ nombreRestants }}</p>
+    </div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="hk-card hk-stat h-100">
+      <span class="hk-stat-icon hk-bg-violet mb-2"><i class="bi bi-bar-chart-fill"></i></span>
+      <div class="hk-stat-label">Ma moyenne</div>
+      <p class="hk-stat-value">{{ moyenneDonnee }}<small class="text-muted fs-6"> / 20</small></p>
+    </div>
+  </div>
+</div>
+
+@if (nombreRestants > 0) {
+  <div class="hk-alert hk-alert-info mb-4">
+    <i class="bi bi-info-circle-fill"></i>
+    <span>Il vous reste {{ nombreRestants }} projet(s) a noter.</span>
+  </div>
+} @else if (nombreProjets > 0) {
+  <div class="hk-alert hk-alert-success mb-4">
+    <i class="bi bi-check-circle-fill"></i>
+    <span>Vous avez note tous les projets soumis.</span>
+  </div>
+}
+
+<div class="row g-3">
+  <div class="col-md-6">
+    <a routerLink="/jury/notation" class="hk-card hk-card-hover hk-raccourci">
+      <span class="hk-stat-icon hk-bg-rose"><i class="bi bi-star-fill"></i></span>
+      <span>
+        <strong>Noter les projets</strong>
+        <small>Consulter les projets soumis et attribuer une note</small>
+      </span>
+      <i class="bi bi-chevron-right ms-auto text-muted"></i>
+    </a>
+  </div>
+  <div class="col-md-6">
+    <a routerLink="/jury/evaluations" class="hk-card hk-card-hover hk-raccourci">
+      <span class="hk-stat-icon hk-bg-violet"><i class="bi bi-list-check"></i></span>
+      <span>
+        <strong>Mes evaluations</strong>
+        <small>Revoir et modifier les notes deja donnees</small>
+      </span>
+      <i class="bi bi-chevron-right ms-auto text-muted"></i>
+    </a>
+  </div>
+</div>

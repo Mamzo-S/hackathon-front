@@ -1,0 +1,202 @@
+<div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-4">
+  <div>
+    <h2 class="hk-page-title">Equipes</h2>
+    <p class="hk-page-subtitle">Votre equipe, et toutes les autres equipes du hackathon.</p>
+  </div>
+  <button class="btn-hk-outline" (click)="chargerEquipes()" [disabled]="chargement">
+    <i class="bi bi-arrow-clockwise me-1"></i> Rafraichir
+  </button>
+</div>
+
+@if (erreur) {
+  <div class="hk-alert hk-alert-danger mb-3">
+    <i class="bi bi-exclamation-triangle-fill"></i><span>{{ erreur }}</span>
+  </div>
+}
+@if (succes) {
+  <div class="hk-alert hk-alert-success mb-3">
+    <i class="bi bi-check-circle-fill"></i><span>{{ succes }}</span>
+  </div>
+}
+
+@if (monEquipe) {
+  <div class="hk-card hk-mon-equipe mb-4">
+    <div class="p-3 p-lg-4">
+      <div class="d-flex align-items-center gap-3 mb-3 flex-wrap">
+        <span class="hk-equipe-logo">{{ monEquipe.name.charAt(0).toUpperCase() }}</span>
+        <div class="flex-grow-1">
+          <h3 class="h5 mb-1">
+            {{ monEquipe.name }}
+            <span class="hk-badge hk-badge-indigo ms-1"><i class="bi bi-star-fill"></i><span>Mon equipe</span></span>
+          </h3>
+          <p class="text-muted small mb-0">{{ monEquipe.description || 'Sans description' }}</p>
+        </div>
+        <button class="btn-hk-outline hk-btn-danger" (click)="onQuitter(monEquipe)" [disabled]="enCours">
+          <i class="bi bi-box-arrow-right me-1"></i> Quitter
+        </button>
+      </div>
+
+      <div class="hk-divider"></div>
+
+      <p class="hk-stat-label mb-2">Membres ({{ mesCoequipiers.length }})</p>
+      <ul class="hk-liste-membres">
+        @for (membre of mesCoequipiers; track membre.id) {
+          <li>
+            <app-avatar [prenom]="membre.utilisateur.prenom" [nom]="membre.utilisateur.nom" [taille]="36" />
+            <span class="hk-membre-infos">
+              <strong>
+                {{ membre.utilisateur.prenom }} {{ membre.utilisateur.nom }}
+                @if (membre.createur) {
+                  <span class="hk-badge hk-badge-amber ms-1"><i class="bi bi-star-fill"></i><span>Createur</span></span>
+                }
+              </strong>
+              <small>{{ membre.utilisateur.username }}</small>
+            </span>
+            <span class="hk-membre-date">
+              <i class="bi bi-calendar-check me-1"></i>{{ membre.dateAdhesion | dateFr }}
+            </span>
+          </li>
+        } @empty {
+          <li class="text-muted small justify-content-center py-2">Aucun membre pour l'instant.</li>
+        }
+      </ul>
+
+      @if (monEquipe.projet) {
+        <div class="hk-projet-lien mt-3">
+          <i class="bi bi-rocket-takeoff-fill"></i>
+          <span>Projet soumis : <strong>{{ monEquipe.projet.title }}</strong></span>
+        </div>
+      } @else {
+        <p class="small text-muted mt-3 mb-0">
+          <i class="bi bi-info-circle me-1"></i> Votre equipe n'a pas encore soumis de projet.
+        </p>
+      }
+    </div>
+  </div>
+}
+
+<div class="row g-4">
+  <!-- Colonne gauche : creation -->
+  <div class="col-lg-4">
+    <div class="hk-card p-3 p-lg-4 hk-sticky">
+      <div class="d-flex align-items-center gap-2 mb-3">
+        <span class="hk-stat-icon hk-bg-indigo" style="width: 34px; height: 34px; font-size: 1rem">
+          <i class="bi bi-plus-lg"></i>
+        </span>
+        <h3 class="h6 mb-0">Creer une equipe</h3>
+      </div>
+
+      @if (monEquipe) {
+        <div class="hk-alert hk-alert-info mb-0">
+          <i class="bi bi-info-circle-fill"></i>
+          <span>
+            Vous etes deja dans <strong>{{ monEquipe.name }}</strong>.
+            Quittez-la pour en creer une autre.
+          </span>
+        </div>
+      } @else {
+        <form [formGroup]="equipeForm" (ngSubmit)="onCreer()">
+          <div class="mb-3">
+            <label for="name" class="form-label">Nom de l'equipe</label>
+            <input id="name" type="text" class="form-control" formControlName="name"
+                   placeholder="Les Innovateurs" />
+            @if (name?.touched && name?.invalid) {
+              <div class="form-text text-danger">3 caracteres minimum.</div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea id="description" class="form-control" rows="3" formControlName="description"
+                      placeholder="En quelques mots, votre equipe..."></textarea>
+          </div>
+          <button type="submit" class="btn-hk w-100" [disabled]="enCours">
+            <i class="bi bi-people-fill me-1"></i> Creer l'equipe
+          </button>
+        </form>
+      }
+    </div>
+  </div>
+
+  <!-- Colonne droite : liste -->
+  <div class="col-lg-8">
+    @if (chargement) {
+      <div class="hk-card hk-empty">
+        <span class="spinner-border text-primary"></span>
+        <p class="mt-3 mb-0">Chargement des equipes...</p>
+      </div>
+    } @else {
+      @for (equipe of equipes; track equipe.id) {
+        <div class="hk-card hk-card-hover mb-3" [class.hk-equipe-mienne]="estMonEquipe(equipe)">
+          <div class="p-3 p-lg-4">
+            <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+              <div class="d-flex gap-3">
+                <span class="hk-equipe-logo">{{ equipe.name.charAt(0).toUpperCase() }}</span>
+                <div>
+                  <h3 class="h5 mb-1 d-flex align-items-center gap-2 flex-wrap">
+                    {{ equipe.name }}
+                    @if (estMonEquipe(equipe)) {
+                      <span class="hk-badge hk-badge-indigo"><i class="bi bi-star-fill"></i> Mon equipe</span>
+                    }
+                  </h3>
+                  <p class="text-muted small mb-0">
+                    {{ equipe.description || 'Sans description' }}
+                  </p>
+                  <p class="text-muted small mb-0 mt-1">
+                    <i class="bi bi-person-badge me-1"></i>
+                    {{ equipe.nombreMembres }} membre(s)
+                    @if (equipe.createdBy) {
+                      · cree par {{ equipe.createdBy.username }}
+                    }
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                @if (estMonEquipe(equipe)) {
+                  <span class="hk-badge hk-badge-indigo"><i class="bi bi-check-lg"></i><span>Membre</span></span>
+                } @else if (!monEquipe) {
+                  <button class="btn-hk" (click)="onRejoindre(equipe)" [disabled]="enCours">
+                    <i class="bi bi-plus-lg me-1"></i> Rejoindre
+                  </button>
+                }
+              </div>
+            </div>
+
+            <div class="hk-divider"></div>
+
+            <!-- Les membres sont deja inclus dans la reponse de GET /api/teams -->
+            <p class="hk-stat-label mb-2">Membres</p>
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+              @for (membre of equipe.membres; track membre.id) {
+                <div class="hk-membre">
+                  <app-avatar [prenom]="membre.utilisateur.prenom" [nom]="membre.utilisateur.nom" [taille]="30" />
+                  <span>
+                    {{ membre.utilisateur.prenom }} {{ membre.utilisateur.nom }}
+                    @if (membre.createur) {
+                      <i class="bi bi-star-fill text-warning ms-1" title="Createur"></i>
+                    }
+                  </span>
+                </div>
+              } @empty {
+                <span class="text-muted small">Aucun membre.</span>
+              }
+            </div>
+
+            @if (equipe.projet) {
+              <div class="hk-projet-lien mt-3">
+                <i class="bi bi-rocket-takeoff-fill"></i>
+                <span>Projet soumis : <strong>{{ equipe.projet.title }}</strong></span>
+              </div>
+            }
+          </div>
+        </div>
+      } @empty {
+        <div class="hk-card hk-empty">
+          <i class="bi bi-people"></i>
+          <h3 class="h6">Aucune equipe pour l'instant</h3>
+          <p class="mb-0 small">Soyez le premier a en creer une avec le formulaire de gauche.</p>
+        </div>
+      }
+    }
+  </div>
+</div>

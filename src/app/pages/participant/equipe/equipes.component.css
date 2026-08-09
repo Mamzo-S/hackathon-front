@@ -1,0 +1,114 @@
+.hk-sticky {
+  position: sticky;
+  top: 82px;
+}
+
+.hk-equipe-mienne {
+  border-color: #c7d2fe;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.08), var(--hk-shadow);
+}
+
+.hk-equipe-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--hk-gradient-soft);
+  border: 1px solid #e0e7ff;
+  color: var(--hk-primary-dark);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.hk-membre {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: #fafbfe;
+  border: 1px solid var(--hk-border);
+  border-radius: 999px;
+  padding: 0.22rem 0.72rem 0.22rem 0.22rem;
+  font-size: 0.83rem;
+  font-weight: 500;
+}
+
+.hk-projet-lien {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: var(--hk-gradient-soft);
+  border: 1px solid #e0e7ff;
+  border-radius: 12px;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.87rem;
+  color: #4338ca;
+}
+
+.hk-btn-danger:hover:not(:disabled) {
+  border-color: var(--hk-danger);
+  color: var(--hk-danger);
+  background: #fef2f2;
+}
+
+@media (max-width: 991px) {
+  .hk-sticky {
+    position: static;
+  }
+}
+
+.hk-mon-equipe {
+  border-color: #c7d2fe;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.08), var(--hk-shadow);
+}
+
+.hk-liste-membres {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.hk-liste-membres li {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  background: #fafbfe;
+  border: 1px solid var(--hk-border);
+  border-radius: 12px;
+  padding: 0.55rem 0.8rem;
+}
+
+.hk-membre-infos {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+  min-width: 0;
+  flex: 1;
+}
+
+.hk-membre-infos strong {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.hk-membre-infos small {
+  color: var(--hk-muted);
+  font-size: 0.78rem;
+}
+
+.hk-membre-date {
+  font-size: 0.75rem;
+  color: var(--hk-muted);
+  white-space: nowrap;
+}
+
+@media (max-width: 575px) {
+  .hk-membre-date {
+    display: none;
+  }
+}

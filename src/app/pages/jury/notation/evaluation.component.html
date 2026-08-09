@@ -1,0 +1,170 @@
+<div class="mb-4">
+  <h2 class="hk-page-title">Projets a evaluer</h2>
+  <p class="hk-page-subtitle">
+    Notez chaque projet sur trois criteres, de 0 a 20. Le score final est leur moyenne.
+  </p>
+</div>
+
+@if (erreur) {
+  <div class="hk-alert hk-alert-danger mb-3">
+    <i class="bi bi-exclamation-triangle-fill"></i><span>{{ erreur }}</span>
+  </div>
+}
+@if (succes) {
+  <div class="hk-alert hk-alert-success mb-3">
+    <i class="bi bi-check-circle-fill"></i><span>{{ succes }}</span>
+  </div>
+}
+
+<div class="row g-4">
+  <!-- Projets a evaluer (rxResource) -->
+  <div class="col-lg-7">
+    @if (evaluationService.projetsAEvaluer.isLoading()) {
+      <div class="hk-card hk-empty">
+        <span class="spinner-border text-primary"></span>
+        <p class="mt-3 mb-0">Chargement des projets...</p>
+      </div>
+    } @else if (evaluationService.projetsAEvaluer.error()) {
+      <div class="hk-alert hk-alert-danger">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <span>{{ erreurService.extraire(evaluationService.projetsAEvaluer.error()) }}</span>
+      </div>
+    } @else {
+      @for (projet of evaluationService.projetsAEvaluer.value(); track projet.id) {
+        <div class="hk-card hk-card-hover mb-3"
+             [class.hk-selectionne]="projetSelectionne?.id === projet.id">
+          <div class="p-3 p-lg-4">
+            <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
+              <h3 class="h5 mb-0">{{ projet.title }}</h3>
+              @if (noteExistante(projet); as note) {
+                <span class="hk-badge hk-badge-emerald">
+                  <i class="bi bi-check-circle-fill"></i> Note : {{ note.score }}/20
+                </span>
+              } @else {
+                <span class="hk-badge hk-badge-amber">
+                  <i class="bi bi-hourglass-split"></i> A noter
+                </span>
+              }
+            </div>
+
+            @if (projet.team) {
+              <div class="d-flex flex-wrap gap-2 mb-3">
+                <span class="hk-badge hk-badge-indigo">
+                  <i class="bi bi-people-fill"></i> {{ projet.team.name }}
+                </span>
+              </div>
+            }
+
+            <p class="hk-description mb-3">{{ projet.description }}</p>
+
+            @if (projet.githubLink) {
+              <a [href]="projet.githubLink" target="_blank" rel="noopener" class="hk-github mb-3">
+                <i class="bi bi-github"></i>
+                <span>{{ projet.githubLink }}</span>
+                <i class="bi bi-box-arrow-up-right ms-auto"></i>
+              </a>
+            }
+
+            <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap">
+              <div class="d-flex align-items-center gap-1">
+                @for (membre of projet.membres; track membre.id) {
+                  <app-avatar [prenom]="membre.utilisateur.prenom" [nom]="membre.utilisateur.nom" [taille]="28" />
+                }
+              </div>
+              <button class="btn-hk" (click)="onSelectionner(projet)">
+                <i class="bi bi-star-fill me-1"></i>
+                {{ noteExistante(projet) ? 'Modifier ma note' : 'Noter ce projet' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      } @empty {
+        <div class="hk-card hk-empty">
+          <i class="bi bi-inbox"></i>
+          <h3 class="h6">Aucun projet a evaluer</h3>
+          <p class="mb-0 small">Les projets apparaitront ici des qu'une equipe en soumettra un.</p>
+        </div>
+      }
+    }
+  </div>
+
+  <!-- Formulaire de notation -->
+  <div class="col-lg-5">
+    @if (projetSelectionne) {
+      <div class="hk-card hk-sticky hk-form-note">
+        <div class="hk-form-note-entete">
+          <span class="hk-stat-icon hk-bg-rose"><i class="bi bi-star-fill"></i></span>
+          <div>
+            <p class="hk-stat-label mb-0">Notation</p>
+            <strong>{{ projetSelectionne.title }}</strong>
+          </div>
+        </div>
+
+        <div class="p-3 p-lg-4">
+          <form [formGroup]="noteForm" (ngSubmit)="onNoter()">
+            <div class="mb-3">
+              <label for="innovation" class="form-label d-flex justify-content-between">
+                <span><i class="bi bi-lightbulb me-1"></i> Innovation</span>
+                <strong class="hk-valeur">{{ noteForm.value.noteInnovation }}</strong>
+              </label>
+              <input id="innovation" type="range" class="form-range" min="0" max="20" step="0.5"
+                     formControlName="noteInnovation" />
+            </div>
+
+            <div class="mb-3">
+              <label for="technique" class="form-label d-flex justify-content-between">
+                <span><i class="bi bi-code-slash me-1"></i> Technique</span>
+                <strong class="hk-valeur">{{ noteForm.value.noteTechnique }}</strong>
+              </label>
+              <input id="technique" type="range" class="form-range" min="0" max="20" step="0.5"
+                     formControlName="noteTechnique" />
+            </div>
+
+            <div class="mb-3">
+              <label for="presentation" class="form-label d-flex justify-content-between">
+                <span><i class="bi bi-easel me-1"></i> Presentation</span>
+                <strong class="hk-valeur">{{ noteForm.value.notePresentation }}</strong>
+              </label>
+              <input id="presentation" type="range" class="form-range" min="0" max="20" step="0.5"
+                     formControlName="notePresentation" />
+            </div>
+
+            <div class="hk-apercu mb-3">
+              <span>Score final</span>
+              <strong>{{ apercuScore }}<small>/20</small></strong>
+            </div>
+
+            <div class="mb-3">
+              <label for="comment" class="form-label">Commentaire</label>
+              <textarea id="comment" class="form-control" rows="3" formControlName="comment"
+                        placeholder="Points forts, axes d'amelioration..."></textarea>
+            </div>
+
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn-hk flex-grow-1" [disabled]="enCours">
+                @if (enCours) {
+                  <span class="spinner-border spinner-border-sm me-2"></span> Enregistrement...
+                } @else {
+                  <i class="bi bi-check-lg me-1"></i>
+                {{ modeModification ? 'Modifier ma note' : 'Enregistrer la note' }}
+                }
+              </button>
+              <button type="button" class="btn-hk-outline" (click)="onAnnuler()">Annuler</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    } @else {
+      <div class="hk-card hk-empty mb-3">
+        <i class="bi bi-hand-index-thumb"></i>
+        <h3 class="h6">Selectionnez un projet</h3>
+        <p class="mb-0 small">Cliquez sur « Noter ce projet » a gauche pour ouvrir le formulaire.</p>
+      </div>
+
+      <p class="text-center small text-muted mt-3 mb-0">
+        Retrouvez toutes vos notes dans
+        <a routerLink="/jury/evaluations" class="hk-link">Mes evaluations</a>.
+      </p>
+    }
+  </div>
+</div>

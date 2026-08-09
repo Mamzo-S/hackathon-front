@@ -1,0 +1,61 @@
+.hk-hero {
+  background: var(--hk-gradient);
+  border-radius: var(--hk-radius);
+  padding: 1.6rem 1.75rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  box-shadow: var(--hk-shadow-lg);
+}
+
+.hk-hero-titre {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0 0 0.2rem;
+}
+
+.hk-hero-texte {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 0.94rem;
+}
+
+.hk-hero-roles {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.hk-hero-roles .hk-badge {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.hk-raccourci {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1rem 1.15rem;
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+}
+
+.hk-raccourci strong {
+  display: block;
+  font-size: 0.96rem;
+}
+
+.hk-raccourci small {
+  color: var(--hk-muted);
+  font-size: 0.82rem;
+}
+
+.hk-raccourci-jury {
+  background: linear-gradient(135deg, #fff 0%, #fdf2f8 100%);
+  border-color: #fce7f3;
+}

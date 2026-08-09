@@ -13,7 +13,16 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "ES2022",
-    "module": "preserve"
+    "module": "preserve",
+    /*
+     * Permet d'ecrire, comme dans le cours (Module 4 - section 10.2) :
+     *     loginForm = this.fb.group({ ... });
+     *     constructor(private fb: FormBuilder) {}
+     * Sans cette option, TypeScript refuse d'utiliser this.fb dans un
+     * initialiseur de champ, car les champs seraient definis avant que le
+     * constructeur n'ait affecte les dependances injectees.
+     */
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

@@ -1,0 +1,65 @@
+<div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-4">
+  <div>
+    <h2 class="hk-page-title">Projets</h2>
+    <p class="hk-page-subtitle">Tous les projets soumis, avec leur score et leur equipe.</p>
+  </div>
+  <button class="btn-hk-outline" (click)="charger()" [disabled]="chargement">
+    <i class="bi bi-arrow-clockwise me-1"></i> Rafraichir
+  </button>
+</div>
+
+@if (erreur) { <div class="hk-alert hk-alert-danger mb-3"><i class="bi bi-exclamation-triangle-fill"></i><span>{{ erreur }}</span></div> }
+@if (succes) { <div class="hk-alert hk-alert-success mb-3"><i class="bi bi-check-circle-fill"></i><span>{{ succes }}</span></div> }
+
+@if (chargement) {
+  <div class="hk-card hk-empty">
+    <span class="spinner-border text-primary"></span>
+    <p class="mt-3 mb-0">Chargement...</p>
+  </div>
+} @else {
+  <div class="hk-card overflow-hidden">
+    <div class="table-responsive">
+      <table class="table hk-table">
+        <thead>
+          <tr>
+            <th>Projet</th>
+            <th style="width: 160px">Equipe</th>
+            <th style="width: 120px">Score</th>
+            <th style="width: 90px" class="text-end">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of projets; track p.id) {
+            <tr>
+              <td>
+                <strong class="d-block">{{ p.title }}</strong>
+                <small class="text-muted">{{ p.description }}</small>
+                @if (p.githubLink) {
+                  <a [href]="p.githubLink" target="_blank" rel="noopener" class="hk-link small d-block mt-1">
+                    <i class="bi bi-github me-1"></i>depot
+                  </a>
+                }
+              </td>
+              <td>{{ p.team?.name || '—' }}</td>
+              <td>
+                @if (p.scoreMoyen !== null) {
+                  <strong>{{ p.scoreMoyen }}</strong><small class="text-muted">/20</small>
+                  <small class="text-muted d-block">{{ p.nombreEvaluations }} note(s)</small>
+                } @else {
+                  <span class="text-muted">—</span>
+                }
+              </td>
+              <td class="text-end">
+                <button class="hk-btn-icone" (click)="onSupprimer(p)" [disabled]="enCours" title="Supprimer">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr><td colspan="5" class="text-center text-muted py-4">Aucun projet.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+}

@@ -1,0 +1,76 @@
+<div class="hk-auth">
+  <!-- Panneau de gauche : identite visuelle -->
+  <div class="hk-auth-visuel">
+    <div class="hk-auth-visuel-contenu">
+      <span class="hk-auth-logo"><i class="bi bi-lightning-charge-fill"></i></span>
+      <h1>Plateforme de gestion de Hackathon</h1>
+      <p>Formez votre equipe, soumettez votre projet, laissez le jury faire le reste.</p>
+
+      <ul class="hk-auth-liste">
+        <li><i class="bi bi-people-fill"></i> Creez ou rejoignez une equipe</li>
+        <li><i class="bi bi-rocket-takeoff-fill"></i> Soumettez votre projet</li>
+        <li><i class="bi bi-star-fill"></i> Faites-vous evaluer par le jury</li>
+        <li><i class="bi bi-trophy-fill"></i> Suivez le classement en direct</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Panneau de droite : le formulaire -->
+  <div class="hk-auth-form">
+    <div class="hk-auth-boite">
+      <h2 class="hk-page-title">Connexion</h2>
+      <p class="hk-page-subtitle mb-4">Entrez vos identifiants pour continuer.</p>
+
+      <!-- Module 5 - section 13.3 : feedback utilisateur -->
+      @if (erreur) {
+        <div class="hk-alert hk-alert-danger mb-3">
+          <i class="bi bi-exclamation-triangle-fill"></i>
+          <span>{{ erreur }}</span>
+        </div>
+      }
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSoumettre()">
+        <div class="mb-3">
+          <label for="username" class="form-label">Nom d'utilisateur</label>
+          <div class="hk-input-icone">
+            <i class="bi bi-person"></i>
+            <input id="username" type="text" class="form-control" formControlName="username"
+                   placeholder="mamadou" autocomplete="username" />
+          </div>
+          @if (username?.touched && username?.invalid) {
+            <div class="form-text text-danger">Le nom d'utilisateur est obligatoire.</div>
+          }
+        </div>
+
+        <div class="mb-4">
+          <label for="motDePasse" class="form-label">Mot de passe</label>
+          <div class="hk-input-icone">
+            <i class="bi bi-lock"></i>
+            <input id="motDePasse" type="password" class="form-control" formControlName="motDePasse"
+                   placeholder="••••••" autocomplete="current-password" />
+          </div>
+          @if (motDePasse?.touched && motDePasse?.errors?.['required']) {
+            <div class="form-text text-danger">Le mot de passe est obligatoire.</div>
+          }
+          @if (motDePasse?.touched && motDePasse?.errors?.['minlength']) {
+            <div class="form-text text-danger">4 caracteres minimum.</div>
+          }
+        </div>
+
+        <button type="submit" class="btn-hk w-100" [disabled]="chargement">
+          @if (chargement) {
+            <span class="spinner-border spinner-border-sm me-2"></span> Connexion...
+          } @else {
+            <i class="bi bi-box-arrow-in-right me-1"></i> Se connecter
+          }
+        </button>
+      </form>
+
+      <div class="hk-divider"></div>
+
+      <p class="text-center mb-0" style="font-size: 0.9rem; color: var(--hk-muted)">
+        Pas encore de compte ? <a routerLink="/register" class="hk-link">Creer un compte</a>
+      </p>
+    </div>
+  </div>
+</div>
